@@ -1,0 +1,6 @@
+FROM node:20-alpine
+WORKDIR /app
+COPY ../../packages/client/package*.json ./
+RUN npm install -g pnpm && pnpm install
+COPY ../../packages/client .
+CMD ["pnpm", "dev"]

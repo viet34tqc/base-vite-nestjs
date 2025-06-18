@@ -1,0 +1,54 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:6
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+
+  # postgres:
+  #   image: postgres:15
+  #   environment:
+  #     POSTGRES_DB: base
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: password
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - pg_data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: ..
+      dockerfile: docker/prod/Dockerfile.server
+    env_file:
+      - ../.env
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+      #- postgres
+    volumes:
+      - ../packages/server:/app
+      - server_node_modules:/app/node_modules
+
+  client:
+    build:
+      context: ..
+      dockerfile: docker/prod/Dockerfile.client
+    env_file:
+      - ../.env
+    ports:
+      - 80:80
+    depends_on:
+      - server
+    volumes:
+      - ../packages/client:/app
+      - client_node_modules:/app/node_modules
+
+volumes:
+  mongo_data:
+  #pg_data:
+  server_node_modules:
+  client_node_modules:

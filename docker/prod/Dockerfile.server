@@ -1,0 +1,13 @@
+FROM node:20-alpine as builder
+WORKDIR /app
+COPY ../../packages/server/package*.json ./
+RUN npm install -g pnpm && pnpm install
+COPY ../../packages/server .
+RUN pnpm build
+
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY ../../packages/server/package*.json ./
+RUN npm install -g pnpm && pnpm install --prod
+CMD ["node", "dist/main.js"]
