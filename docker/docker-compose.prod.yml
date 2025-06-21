@@ -1,11 +1,18 @@
-version: '3.8'
 services:
   mongo:
-    image: mongo:6
+    image: mongo:8
     ports:
       - 27017:27017
+    env_file:
+      - ../.env
     volumes:
       - mongo_data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   # postgres:
   #   image: postgres:15
@@ -20,18 +27,22 @@ services:
 
   server:
     build:
-      context: ..
+      context: ../
       dockerfile: docker/prod/Dockerfile.server
     env_file:
       - ../.env
     ports:
       - 3000:3000
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
       #- postgres
-    volumes:
-      - ../packages/server:/app
-      - server_node_modules:/app/node_modules
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   client:
     build:
@@ -43,12 +54,7 @@ services:
       - 80:80
     depends_on:
       - server
-    volumes:
-      - ../packages/client:/app
-      - client_node_modules:/app/node_modules
 
 volumes:
   mongo_data:
   #pg_data:
-  server_node_modules:
-  client_node_modules:

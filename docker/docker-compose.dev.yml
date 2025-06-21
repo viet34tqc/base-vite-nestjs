@@ -1,8 +1,10 @@
 services:
   mongo:
-    image: mongo:6
+    image: mongo:8
     ports:
       - 27017:27017
+    env_file:
+      - ../.env
     volumes:
       - mongo_data:/data/db
 
@@ -19,8 +21,8 @@ services:
 
   server:
     build:
-      context: ..
-      dockerfile: docker/dev/Dockerfile.server
+      context: ../packages/server
+      dockerfile: ../../docker/dev/Dockerfile.server
     env_file:
       - ../.env
     ports:
@@ -34,8 +36,8 @@ services:
 
   client:
     build:
-      context: ..
-      dockerfile: docker/dev/Dockerfile.client
+      context: ../packages/client
+      dockerfile: ../../docker/dev/Dockerfile.client
     env_file:
       - ../.env
     ports:
