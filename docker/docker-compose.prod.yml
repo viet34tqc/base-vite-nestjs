@@ -7,12 +7,6 @@ services:
       - ../.env
     volumes:
       - mongo_data:/data/db
-    healthcheck:
-      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
 
   # postgres:
   #   image: postgres:15
@@ -29,25 +23,20 @@ services:
     build:
       context: ../
       dockerfile: docker/prod/Dockerfile.server
+    image: base-server-prod:latest
     env_file:
       - ../.env
     ports:
       - 3000:3000
     depends_on:
-      mongo:
-        condition: service_healthy
+      - mongo
       #- postgres
-    healthcheck:
-      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
 
   client:
     build:
       context: ..
       dockerfile: docker/prod/Dockerfile.client
+    image: base-client-prod:latest
     env_file:
       - ../.env
     ports:

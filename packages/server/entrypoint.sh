@@ -1,3 +1,5 @@
 #!/bin/sh
+npx prisma generate
 npx prisma db push
-exec "$@"
+# Start the application
+exec node dist/main.js

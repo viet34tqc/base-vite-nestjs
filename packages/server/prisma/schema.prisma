@@ -1,5 +1,3 @@
-// MongoDB datasource
-// To use PostgreSQL, comment out the MongoDB datasource and uncomment the PostgreSQL one below
 generator client {
   provider = "prisma-client-js"
 }
