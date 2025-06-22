@@ -21,8 +21,9 @@ services:
 
   server:
     build:
-      context: ../packages/server
-      dockerfile: ../../docker/dev/Dockerfile.server
+      context: ../
+      dockerfile: docker/dev/Dockerfile.server
+    image: base-server-dev:latest
     env_file:
       - ../.env
     ports:
@@ -31,13 +32,15 @@ services:
       - mongo
       #- postgres
     volumes:
-      - ../packages/server:/app
-      - server_node_modules:/app/node_modules
+      - ../packages/server:/app/packages/server
+      - ../packages/shared:/app/packages/server/node_modules/@base/shared
+    command: sh -c "pnpm install && npx prisma generate && npx prisma db push && pnpm start:dev"
 
   client:
     build:
-      context: ../packages/client
-      dockerfile: ../../docker/dev/Dockerfile.client
+      context: ../
+      dockerfile: docker/dev/Dockerfile.client
+    image: base-client-dev:latest
     env_file:
       - ../.env
     ports:
@@ -45,8 +48,9 @@ services:
     depends_on:
       - server
     volumes:
-      - ../packages/client:/app
-      - client_node_modules:/app/node_modules
+      - ../packages/client:/app/packages/client
+      - ../packages/shared:/app/packages/client/node_modules/@base/shared
+    command: sh -c "pnpm install && pnpm dev"
 
 volumes:
   mongo_data:

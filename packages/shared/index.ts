@@ -3,4 +3,5 @@
 export interface Example {
   id: string;
   createdAt: string;
+  updatedAt: string;
 }
