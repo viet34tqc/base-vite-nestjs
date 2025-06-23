@@ -31,7 +31,7 @@ services:
     depends_on:
       - mongo
       #- postgres
-    command: sh -c "pnpm install && npx prisma generate && npx prisma db push && pnpm start:dev"
+    command: sh -c "pnpm install --frozen-lockfile --ignore-scripts && npx prisma generate && npx prisma db push && pnpm start:dev"
     develop:
       watch:
         - action: sync
@@ -41,7 +41,7 @@ services:
           path: ../packages/shared
           target: /app/packages/server/node_modules/@base/shared
         - action: rebuild
-          path: pnpm-lock.yaml
+          path: ../pnpm-lock.yaml
 
   client:
     build:
@@ -54,14 +54,14 @@ services:
       - 5173:5173
     depends_on:
       - server
-    command: sh -c "pnpm install && pnpm dev"
+    command: sh -c "pnpm install --frozen-lockfile --ignore-scripts && pnpm dev"
     develop:
       watch:
         - action: sync
           path: ../packages/client
           target: /app/packages/client
         - action: rebuild
-          path: pnpm-lock.yaml
+          path: ../pnpm-lock.yaml
         - action: sync
           path: ../packages/shared
           target: /app/packages/client/node_modules/@base/shared
