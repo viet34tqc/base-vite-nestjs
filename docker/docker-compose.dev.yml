@@ -37,12 +37,13 @@ services:
         - action: sync
           path: ../packages/server
           target: /app/packages/server
+          ignore:
+          - node_modules
         - action: sync
           path: ../packages/shared
           target: /app/packages/server/node_modules/@base/shared
         - action: rebuild
           path: ../pnpm-lock.yaml
-
   client:
     build:
       context: ../
@@ -60,6 +61,8 @@ services:
         - action: sync
           path: ../packages/client
           target: /app/packages/client
+          ignore:
+          - node_modules
         - action: rebuild
           path: ../pnpm-lock.yaml
         - action: sync

@@ -12,8 +12,8 @@ A base project fullstack built with NestJS, React, and MongoDB, containerized wi
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) (v16 or later)
-- [pnpm](https://pnpm.io/) (v7 or later)
+- [Node.js](https://nodejs.org/)
+- [pnpm](https://pnpm.io/)
 - [Docker](https://www.docker.com/) (v20 or later) & Docker Compose
 - [Git](https://git-scm.com/)
 
