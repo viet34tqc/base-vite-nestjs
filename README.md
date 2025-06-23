@@ -1,44 +1,107 @@
-# Base Monorepo
+# Base Vite + Nestjs
 
-A modern fullstack monorepo boilerplate using pnpm workspaces, NestJS (Prisma), Vite+React, and shared types.
+A base project fullstack built with NestJS, React, and MongoDB, containerized with Docker for easy development and deployment.
 
-## Getting Started
+## Features
 
-### Prerequisites
+- **Backend**: NestJS with TypeScript
+- **Frontend**: React with Vite
+- **Database**: MongoDB (with PostgreSQL configuration available)
+- **Development**: Hot-reloading for both frontend and backend
+- **Monorepo**: Managed with pnpm workspaces
 
-- [pnpm](https://pnpm.io/)
-- [Docker](https://www.docker.com/)
+## Prerequisites
 
-### Install dependencies
+- [Node.js](https://nodejs.org/) (v16 or later)
+- [pnpm](https://pnpm.io/) (v7 or later)
+- [Docker](https://www.docker.com/) (v20 or later) & Docker Compose
+- [Git](https://git-scm.com/)
 
-pnpm install
+## Installation
 
-### Development
+1. Clone the repository:
 
-#### Start all services (dev)
+   ```bash
+   git clone git@github.com:viet34tqc/base-vite-nestjs.git
+   cd base-vite-nestjs
+   ```
 
-docker-compose -f docker/docker-compose.dev.yml up --build
+2. Install dependencies:
 
-#### Start all services (prod)
+   ```bash
+   pnpm install
+   ```
 
-docker-compose -f docker/docker-compose.prod.yml up --build
+3. Set up environment variables:
 
-#### Run lint, test, build
+   ```bash
+   cp .env.example .env
+   # Update the .env file with your configuration
+   ```
 
-pnpm run lint
-pnpm run test
-pnpm run build
+## Development
 
-### Project Structure
+### Using Docker (Recommended)
 
-- `packages/server`: NestJS backend (Prisma, MongoDB, PostgreSQL config commented)
-- `packages/client`: React frontend
-- `packages/shared`: Shared types/interfaces
+```bash
+pnpm docker:dev
+```
 
-### Environment Variables
+This will start:
 
-Copy `.env.example` to `.env` and fill in your values.
+- Frontend dev server: `http://localhost:5173`
+- Backend server: `http://localhost:3000`
+- MongoDB: `27017`
 
-### CI/CD
+### Running Services Individually
 
-See `.github/workflows/ci-cd.yml`
+1. **Frontend (Client)**
+
+   ```bash
+   cd packages/client
+   pnpm dev  # Start Vite dev server
+   ```
+
+2. **Backend (Server)**
+
+   ```bash
+   cd packages/server
+   pnpm start:dev  # Start NestJS in watch mode
+   ```
+
+## Project Structure
+
+```text
+.
+├── docker/                    # Docker configuration files
+│   ├── docker-compose.dev.yml  # Development environment
+│   └── docker-compose.prod.yml # Production environment
+├── packages/
+│   ├── client/               # React frontend
+│   │   ├── src/              # Source files
+│   │   ├── index.html        # Main HTML template
+│   │   └── vite.config.ts    # Vite configuration
+│   ├── server/               # NestJS backend
+│   │   ├── src/
+│   │   │   ├── app/        # Application code
+│   │   │   └── main.ts      # Application entry point
+│   │   └── prisma/          # Database schema and migrations
+│   └── shared/               # Shared types and interfaces
+└── README.md                 # This file
+```
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and update the following variables:
+
+```env
+# Server
+PORT=3000
+NODE_ENV=development
+
+# Database
+DATABASE_URL=mongodb://mongo:27017/jobboard
+
+# Frontend
+VITE_API_URL=http://localhost:3000
+```
