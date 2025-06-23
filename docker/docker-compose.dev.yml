@@ -31,10 +31,17 @@ services:
     depends_on:
       - mongo
       #- postgres
-    volumes:
-      - ../packages/server:/app/packages/server
-      - ../packages/shared:/app/packages/server/node_modules/@base/shared
     command: sh -c "pnpm install && npx prisma generate && npx prisma db push && pnpm start:dev"
+    develop:
+      watch:
+        - action: sync
+          path: ../packages/server
+          target: /app/packages/server
+        - action: sync
+          path: ../packages/shared
+          target: /app/packages/server/node_modules/@base/shared
+        - action: rebuild
+          path: pnpm-lock.yaml
 
   client:
     build:
@@ -47,13 +54,18 @@ services:
       - 5173:5173
     depends_on:
       - server
-    volumes:
-      - ../packages/client:/app/packages/client
-      - ../packages/shared:/app/packages/client/node_modules/@base/shared
     command: sh -c "pnpm install && pnpm dev"
+    develop:
+      watch:
+        - action: sync
+          path: ../packages/client
+          target: /app/packages/client
+        - action: rebuild
+          path: pnpm-lock.yaml
+        - action: sync
+          path: ../packages/shared
+          target: /app/packages/client/node_modules/@base/shared
 
 volumes:
   mongo_data:
   #pg_data:
-  server_node_modules:
-  client_node_modules:
