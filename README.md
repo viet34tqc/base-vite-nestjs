@@ -41,7 +41,9 @@ A base project fullstack built with NestJS, React, and MongoDB, containerized wi
 
 ## Development
 
-### Using Docker (Recommended)
+1. Install packages: `pnpm install`
+
+2. Start the development server:
 
 ```bash
 pnpm docker:dev
@@ -52,22 +54,6 @@ This will start:
 - Frontend dev server: `http://localhost:5173`
 - Backend server: `http://localhost:3000`
 - MongoDB: `27017`
-
-### Running Services Individually
-
-1. **Frontend (Client)**
-
-   ```bash
-   cd packages/client
-   pnpm dev  # Start Vite dev server
-   ```
-
-2. **Backend (Server)**
-
-   ```bash
-   cd packages/server
-   pnpm start:dev  # Start NestJS in watch mode
-   ```
 
 ## Project Structure
 
