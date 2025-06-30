@@ -1,23 +1,12 @@
 services:
-  mongo:
-    image: mongo:8
-    ports:
-      - 27017:27017
+  postgres:
+    image: postgres:15
     env_file:
       - ../.env
+    ports:
+      - 5432:5432
     volumes:
-      - mongo_data:/data/db
-
-  # postgres:
-  #   image: postgres:15
-  #   environment:
-  #     POSTGRES_DB: base
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: password
-  #   ports:
-  #     - 5432:5432
-  #   volumes:
-  #     - pg_data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
 
   server:
     build:
@@ -29,8 +18,7 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - mongo
-      #- postgres
+      - postgres
     command: sh -c "npx prisma generate && npx prisma db push && pnpm start:dev"
     develop:
       watch:
@@ -70,5 +58,4 @@ services:
           target: /app/packages/client/node_modules/@base/shared
 
 volumes:
-  mongo_data:
-  #pg_data:
+  pg_data:
