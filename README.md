@@ -6,7 +6,7 @@ A base project fullstack built with NestJS, React, and MongoDB, containerized wi
 
 - **Backend**: NestJS with TypeScript
 - **Frontend**: React with Vite
-- **Database**: MongoDB (with PostgreSQL configuration available)
+- **Database**: PostgreSQL
 - **Development**: Hot-reloading for both frontend and backend
 - **Monorepo**: Managed with pnpm workspaces
 
@@ -41,9 +41,7 @@ A base project fullstack built with NestJS, React, and MongoDB, containerized wi
 
 ## Development
 
-1. Install packages: `pnpm install`
-
-2. Start the development server:
+### Using Docker
 
 ```bash
 pnpm docker:dev
@@ -53,7 +51,13 @@ This will start:
 
 - Frontend dev server: `http://localhost:5173`
 - Backend server: `http://localhost:3000`
-- MongoDB: `27017`
+- PostgreSQL: `5432`
+
+### Update database schema
+
+- Copy .env into `packages/server/.env`
+- Change the postgres from `postgres` to `localhost` in DATABASE_URL: "postgresql://postgres:postgres123@localhost:5432/base?schema=public"
+- Run `cd packages/server && npx prisma db push`
 
 ## Project Structure
 
