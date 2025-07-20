@@ -1,4 +1,6 @@
 export default () => ({
-  BACKEND_PORT: process.env.PORT ? parseInt(process.env.PORT) : 3000,
-  FRONTEND_URL: process.env.FRONTEND_URL ?? 'http://localhost:5173',
+  backendPort: process.env.BACKEND_PORT
+    ? parseInt(process.env.BACKEND_PORT)
+    : 3000,
+  frontendUrl: process.env.FRONTEND_URL ?? 'http://localhost:5173',
 });
